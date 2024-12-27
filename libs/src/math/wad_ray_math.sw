@@ -1,10 +1,10 @@
 library;
 
-const WAD: u256 = 1_000_000_000_000_000_000_u256; // 1e18
-const HALF_WAD: u256 = 500_000_000_000_000_000_u256; // 0.5e18
-const RAY: u256 = 1_000_000_000_000_000_000_000_000_000_u256; // 1e27
-const HALF_RAY: u256 = 500_000_000_000_000_000_000_000_000_u256; // 0.5e27
-const WAD_RAY_RATIO: u256 = 1_000_000_000_u256; // 1e9
+pub const WAD: u256 = 1_000_000_000_000_000_000_u256; // 1e18
+pub const HALF_WAD: u256 = 500_000_000_000_000_000_u256; // 0.5e18
+pub const RAY: u256 = 1_000_000_000_000_000_000_000_000_000_u256; // 1e27
+pub const HALF_RAY: u256 = 500_000_000_000_000_000_000_000_000_u256; // 0.5e27
+pub const WAD_RAY_RATIO: u256 = 1_000_000_000_u256; // 1e9
 
 /// WadRayMath library provides functions to perform calculations with Wad and Ray units
 /// Wad: decimal numbers with 18 digits of precision
