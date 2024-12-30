@@ -37,6 +37,45 @@ impl WadRayMath {
         Ok((a * b + Self::HALF_WAD) / Self::WAD)
     }
 
+    /// Draft asm version
+    /// Multiplies two wad, rounding half up to the nearest wad
+    pub fn asm_wad_mul(a: u256, b: u256) -> u256 {
+        let mut c: u256 = 0;
+
+        asm(a: a, b: b, half_wad: HALF_WAD, wad: WAD, r: c) {
+            // Initialize zero register
+            movi r0, 0
+
+            // Check if b is zero using 256-bit comparison
+            wqcm r1, b, r0
+            jnzi r1, 15    // Jump to rvrt instruction if r1 is not zero (15 instructions forward)
+
+            // Calculate (type(u256).max - HALF_WAD)
+            not r2, r0     
+            wqam r3, r2, half_wad
+
+            // Divide by b to get the maximum allowed value for a
+            wqdv r4, r3, b
+
+            // Compare a with max allowed value
+            wqcm r5, a, r4
+            gt r6, r5, r0
+            jnzi r6, 8     // Jump to rvrt instruction if r6 is not zero (8 instructions forward)
+
+            // Perform multiplication: c = (a * b + HALF_WAD) / WAD
+            wqml r7, a, b    
+            wqam r8, r7, half_wad  
+            wqdv r9, r8, wad  
+
+            move r, r9
+            ret
+
+            // Revert instruction
+            rvrt r0
+        }
+        c
+    }
+
     /// Divides two wad, rounding half up to the nearest wad
     /// @param a Wad
     /// @param b Wad
